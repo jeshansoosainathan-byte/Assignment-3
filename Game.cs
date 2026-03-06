@@ -1,4 +1,5 @@
 ﻿// Include the namespaces (code libraries) you need below.
+using Assignment_3;
 using System;
 using System.Numerics;
 
@@ -18,14 +19,31 @@ namespace MohawkGame2D
         /// </summary>
         public void Setup()
         {
-
+            Window.SetTitle("Concentration");
+            Window.SetSize(800,600);
         }
 
         /// <summary>
         ///     Update runs every frame.
         /// </summary>
+        Card card = new Card(0, 0, 1);
         public void Update()
         {
+
+            Window.ClearBackground(Color.White);
+            
+
+            card.Render();
+
+            if (Input.IsMouseButtonPressed(MouseInput.Left))
+            {
+                 
+                card.CheckClick();
+
+
+            }
+
+
 
         }
     }
