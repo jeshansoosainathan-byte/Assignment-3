@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Assignment_3
 {
    
-   
+
 
 
     public class Card
@@ -24,16 +24,17 @@ namespace Assignment_3
         public bool hovering = false;
         public bool clicked = false;
 
-
-        private int cardWidth = 80;
-        private int cardHeight = 140;
+        public float fallTime = 0;
+      
 
         public int leftEdge;
         public int rightEdge;
         public int topEdge;
         public int bottomEdge;
 
-        public Card pair;
+
+      
+
 
 
         public Card(int xIn, int yIn, int idIn) { 
@@ -43,22 +44,16 @@ namespace Assignment_3
             id=idIn;
 
             leftEdge = x;
-            rightEdge = x + cardWidth;
+            rightEdge = x + Game.cardWidth;
             topEdge = y;
-            bottomEdge = y + cardHeight;
+            bottomEdge = y + Game.cardHeight;
 
 
 
 
         }
 
-        public void setPair(Card card)
-        {
-
-            this.pair = card;
-            card.pair = this;
-        }
-
+       
 
         public void Render()
         {
@@ -79,21 +74,35 @@ namespace Assignment_3
                 background = MohawkGame2D.Color.Blue;
             }
 
+            if (collected)
+            {
+
+                
+                    y++;
+       
+                background = MohawkGame2D.Color.Green;
+            }
+
+
 
             Draw.FillColor=background;
  
-            Draw.Rectangle(x, y, cardWidth, cardHeight);
+            Draw.Rectangle(x, y, Game.cardWidth, Game.cardHeight);
 
-            if (clicked)
+
+
+            if (clicked || collected)
             {
 
-
-               
                 Text.Color = MohawkGame2D.Color.Black;
                 Text.Size = 32;
-                Text.Draw(id.ToString(), (x + cardWidth / 2) - 16, (y + cardHeight / 2) - 16);
-               
+                Text.Draw(id.ToString(), (x + Game.cardWidth / 2) - 16, (y + Game.cardHeight / 2) - 16);
+
             }
+ 
+
+
+
         }
 
         public bool IsHovering(Vector2 point)
@@ -102,7 +111,7 @@ namespace Assignment_3
             bool isWithinX = point.X > leftEdge && point.X < rightEdge;
             bool isWithinY = point.Y > topEdge && point.Y < bottomEdge;
 
-            // We can combine these two results into one
+            
            return isWithinX && isWithinY;
 
         }
@@ -114,28 +123,33 @@ namespace Assignment_3
 
         }
 
-        public void CheckClick()
+        public bool CheckClick()
         {
             
             Vector2 position = new Vector2(Input.GetMouseX(), Input.GetMouseY());
-            
+           
             if (IsHovering(position))
             {
-              
-                clicked = true;
 
+                
+                clicked = true;
+                return true;
 
             }
 
-
-
-            
-
-
-
-
+            return false;
 
         }
+
+        public void collect()
+        {
+
+            Console.WriteLine($"Collecting card of id {id}");
+            clicked = false;
+            collected = true;
+
+        }
+
 
 
 
